@@ -101,6 +101,24 @@ def list_notes():
             print(f"Дата/время создания/изменения: {note['timestamp']}")
             print()
 
+# Функция для фильтрации заметок по дате
+def filter_notes():
+    date_str = input("Введите дату для фильтрации (гггг-мм-дд): ")
+    try:
+        date = datetime.datetime.strptime(date_str, "%Y-%m-%d").date()
+        filtered_notes = [note for note in notes if datetime.datetime.strptime(note['timestamp'], "%Y-%m-%d %H:%M:%S").date() == date]
+        if len(filtered_notes) == 0:
+            print("Заметок с указанной датой нет.")
+        else:
+            for note in filtered_notes:
+                print(f"ID: {note['id']}")
+                print(f"Заголовок: {note['title']}")
+                print(f"Текст: {note['body']}")
+                print(f"Дата/время создания/изменения: {note['timestamp']}")
+                print()
+    except ValueError:
+        print("Неверный формат даты.")
+
 # Функция для обработки команд пользователя
 def process_command(command):
     if command == 'add':
@@ -111,6 +129,8 @@ def process_command(command):
         delete_note()
     elif command == 'list':
         list_notes()
+    elif command == 'filter':
+        filter_notes()
     elif command == 'exit':
         exit()
     else:
@@ -119,5 +139,5 @@ def process_command(command):
 # Основной цикл программы
 notes = read_notes()
 while True:
-    command = input("Введите команду (add, edit, delete, list, exit): ")
+    command = input("Введите команду (add, edit, delete, list, filter, exit): ")
     process_command(command)
