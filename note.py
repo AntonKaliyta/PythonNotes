@@ -36,6 +36,7 @@
 import json
 import datetime
 
+
 # Функция для чтения заметок из файла
 def read_notes():
     try:
@@ -45,10 +46,12 @@ def read_notes():
         notes = []
     return notes
 
+
 # Функция для сохранения заметок в файл
 def save_notes(notes):
     with open('notes.json', 'w') as file:
         json.dump(notes, file)
+
 
 # Функция для добавления заметки
 def add_note():
@@ -65,6 +68,7 @@ def add_note():
     save_notes(notes)
     print("Заметка успешно добавлена!")
 
+
 # Функция для редактирования заметки
 def edit_note():
     note_id = int(input("Введите ID заметки для редактирования: "))
@@ -78,6 +82,7 @@ def edit_note():
             return
     print("Заметка с указанным ID не найдена.")
 
+
 # Функция для удаления заметки
 def delete_note():
     note_id = int(input("Введите ID заметки для удаления: "))
@@ -88,6 +93,7 @@ def delete_note():
             print("Заметка успешно удалена!")
             return
     print("Заметка с указанным ID не найдена.")
+
 
 # Функция для вывода списка заметок
 def list_notes():
@@ -100,6 +106,7 @@ def list_notes():
             print(f"Текст: {note['body']}")
             print(f"Дата/время создания/изменения: {note['timestamp']}")
             print()
+
 
 # Функция для фильтрации заметок по дате
 def filter_notes():
@@ -119,25 +126,34 @@ def filter_notes():
     except ValueError:
         print("Неверный формат даты.")
 
-# Функция для обработки команд пользователя
-def process_command(command):
-    if command == 'add':
-        add_note()
-    elif command == 'edit':
-        edit_note()
-    elif command == 'delete':
-        delete_note()
-    elif command == 'list':
-        list_notes()
-    elif command == 'filter':
-        filter_notes()
-    elif command == 'exit':
-        exit()
-    else:
-        print("Неверная команда.")
 
-# Основной цикл программы
-notes = read_notes()
-while True:
-    command = input("Введите команду (add, edit, delete, list, filter, exit): ")
-    process_command(command)
+# Функция вызова требуемых функций
+def main_menu():
+    run = True
+    global notes
+    notes = read_notes()
+    while run:
+        anwser = input("Действия с заметками:\n"
+                       "1. Добавить заметку\n"
+                       "2. Редактировать заметку\n"
+                       "3. Удалить замутку\n"
+                       "4. Список заметок\n"
+                       "5. Выбрать заметки по дате\n"
+                       "6. Выход\n")
+        match anwser:
+            case "1":
+                add_note()
+            case "2":
+                edit_note()
+            case "3":
+                delete_note()
+            case "4":
+                list_notes()
+            case "5":
+                filter_notes()
+            case "6":
+                run = False
+            case _:
+                print("Неверная команда.\n")
+
+main_menu()
